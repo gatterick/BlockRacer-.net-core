@@ -8,7 +8,16 @@ each player controls a car on a race-track.
 Specification:
 
 The REST-api is as follows; as long as the client fulfills this it will be 
-compatible with this implementatio of the server:
+compatible with this implementation of the server:
+
+The following endpoints exists
+
+<url>/v1/maps
+<url>/v1/players
+<url>/v1/races
+
+Each endpoint is separate from eachother and by querying the individual endpoints
+
 
 - How to start my own Blockracer server:
 It's available as a docker-image from dockerhub.

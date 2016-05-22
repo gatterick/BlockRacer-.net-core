@@ -1,0 +1,14 @@
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+bin
+obj
+.vscode/*
+.vscode/.browse.VC.db-wal
+.vscode/.browse.VC.db
