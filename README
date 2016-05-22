@@ -1,0 +1,14 @@
+Blockracer 0.1-BETA
+
+Introduction:
+
+Blockracer is a fast-pace (or slow if you prefer that) turn-based game where
+each player controls a car on a race-track.
+
+Specification:
+
+The REST-api is as follows; as long as the client fulfills this it will be 
+compatible with this implementatio of the server:
+
+- How to start my own Blockracer server:
+It's available as a docker-image from dockerhub.
