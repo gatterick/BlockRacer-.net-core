@@ -25,7 +25,7 @@ namespace BlockRacer.Controllers
 
             string creatorID = newGame.creatorID;
             
-            Player player = PlayerRepository.getPlayer(creatorID);
+            Player player = PlayerRepository.Find(creatorID);
             
             int nrOfOngoingGames = player.GetNrOfOngoingGames();
             int nrofAllowedGames = 0;
@@ -41,7 +41,7 @@ namespace BlockRacer.Controllers
                                     newGame.maxNrOfPlayers,
                                     player);
                                     
-            bool opOk = RaceRepository.Create(newRace);
+            bool opOk = RaceRepository.Add(newRace);
             
         }
 

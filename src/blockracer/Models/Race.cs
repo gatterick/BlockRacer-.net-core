@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 namespace BlockRacer.Models {
+    
     ///<summary>Represents an race.</summary>
     public class Race {
         /// Represents the different states a game can have.

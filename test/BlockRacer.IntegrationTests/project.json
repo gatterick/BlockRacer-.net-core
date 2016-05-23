@@ -3,9 +3,6 @@
   "testRunner": "xunit",
   "description": "BlockRacer.UnitTests Class Library",
   "authors": [ "Olof Gatter (@gmail)" ],
-  "tags": [ "" ],
-  "projectUrl": "",
-  "licenseUrl": "",
    "frameworks": {
         "netcoreapp1.0": {
           "imports": [ "dnxcore50", "portable-net45+win8" ]
@@ -17,7 +14,8 @@
   "dependencies": {
         "BlockRacer":"1.0.0",
         "xunit": "2.1.0-rc2-build3176",
-        "dotnet-test-xunit":"1.0.0-rc2-build10015"
+        "dotnet-test-xunit":"1.0.0-rc2-build10015",
+        "Microsoft.AspNet.TestHost": "1.0.0-rc1-final"
     },
   "commands": {
     "test": "xunit.runner.dnx"

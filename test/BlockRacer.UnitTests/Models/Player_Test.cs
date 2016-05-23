@@ -4,8 +4,8 @@ using BlockRacer.Models;
 
 namespace BlockRacer.UnitTests.Models
 {
-    public class RaceUnitTest {
-        [Fact]
+    public class Player_Test {
+        [Theory]
         public void CreateRaceAndCheckNotStartedStatus() {
             Player player = new Player();
             //Race race = new Race();

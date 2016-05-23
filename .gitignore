@@ -6,11 +6,12 @@
 *.exe
 *.o
 *.so
-
+*.*~
 bin
 obj
 .vscode/*
 .vscode/.browse.VC.db-wal
 .vscode/.browse.VC.db
 /src/BlockRacer/project.lock.json
-/test/project.lock.json
+/test/BlockRacer.UnitTests/project.lock.json
+/test/BlockRacer.IntegrationTests/project.lock.json
