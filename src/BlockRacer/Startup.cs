@@ -4,10 +4,9 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using System;
-using Configuration;
 
 namespace BlockRacer {
-    public class MainEntrypoint {
+    public class Startup {
         public static void Main(string[] args) {
             System.Console.WriteLine("Starting webservice");
             
@@ -22,7 +21,7 @@ namespace BlockRacer {
         }
     }
     
-    class Startup {
+    class Startup2 {
         public void ConfigureServices(IServiceCollection services) {
             
         }

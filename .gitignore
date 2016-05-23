@@ -12,3 +12,5 @@ obj
 .vscode/*
 .vscode/.browse.VC.db-wal
 .vscode/.browse.VC.db
+/src/BlockRacer/project.lock.json
+/test/project.lock.json

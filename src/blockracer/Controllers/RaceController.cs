@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-using Models;
-using Repositories;
-using Configuration;
+using BlockRacer.Models;
+using BlockRacer.Repositories;
+using BlockRacer.Configuration;
 
 namespace BlockRacer.Controllers
 {

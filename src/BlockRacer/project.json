@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0",
   "buildOptions": {
      "emitEntryPoint": true
   },
@@ -25,6 +25,9 @@
         "netcoreapp1.0": {
           "imports": [ "dnxcore50", "portable-net45+win8" ]
         }
+  },
+   "commands": {
+    "web": "Microsoft.AspNet.Server.Kestrel"
   },
   "tools": {
     "Microsoft.EntityFrameworkCore.Tools": {

@@ -1,4 +1,4 @@
-namespace Models {
+namespace BlockRacer.Models {
     public class Car {
         
         private Player driver { get; set; }

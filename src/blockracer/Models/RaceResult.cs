@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-namespace Models {
+
+namespace BlockRacer.Models {
     public class RaceResult {
         Player creator;
         

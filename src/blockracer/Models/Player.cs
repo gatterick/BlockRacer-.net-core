@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Models {
+namespace BlockRacer.Models {
     public class Player {
         public enum TypeOfUser { Freemium, Premium }
         

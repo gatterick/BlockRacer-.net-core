@@ -1,4 +1,4 @@
-namespace Controllers {
+namespace BlockRacer.Controllers {
     public class MapController {
         
     }

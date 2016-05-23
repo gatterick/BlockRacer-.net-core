@@ -1,7 +1,7 @@
-using Models;
+using BlockRacer.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Configuration {
+namespace BlockRacer.Configuration {
     
     public interface IConfiguration {
         int GetMaxNrOfParalellGames();
