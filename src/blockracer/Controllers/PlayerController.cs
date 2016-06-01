@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-
 using BlockRacer.Models;
 using BlockRacer.Repositories;
 using BlockRacer.Configuration;

@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using BlockRacer.Models;
 using BlockRacer.Repositories;
-using System.Threading.Tasks;
 using BlockRacer.Configuration;
-
+using BlockRacer.RestRequests;
 
 namespace BlockRacer.Controllers
 {
@@ -12,6 +10,16 @@ namespace BlockRacer.Controllers
     [Controller]
     public class RaceController : ControllerBase
     {
+        PlayerRepository playerRepo;
+        
+        RaceRepository raceRepo;
+        
+        public RaceController(PlayerRepository playerRepo,
+                                RaceRepository raceRepo) {
+            this.playerRepo = playerRepo;
+            this.raceRepo = raceRepo;
+        }
+        
         [HttpGet]
         public string Get()
         {
@@ -27,10 +35,9 @@ namespace BlockRacer.Controllers
          // POST api/values
         [HttpPost]
         public IActionResult Post([FromBody] GameRequest newGame)
-        {   
-            string creatorID = newGame.creatorID;
-            
-            Player player = PlayerRepository.Find(creatorID);
+        {
+            int creatorID = 1; //TODO, need to find ID from social media auth provider.
+            Player player = playerRepo.Find(creatorID);
             
             int nrOfOngoingGames = player.GetNrOfOngoingGames();
             int nrofAllowedGames = 0;
@@ -46,7 +53,7 @@ namespace BlockRacer.Controllers
                                     newGame.maxNrOfPlayers,
                                     player);
                                     
-            bool opOk = RaceRepository.Add(newRace);
+            bool opOk = raceRepo.Create(newRace);
             return new OkResult();
         }
 
@@ -58,19 +65,13 @@ namespace BlockRacer.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(string guid)
+        public void Delete(string id)
         {
-        }
-    }
-    
-    public class GameRequest {
-        public string creatorID { get; set; }
-        public int maxNrOfPlayers { get; set; }
-        public int minNrOfPlayers { get; set; }
-        
-        override
-        public string ToString() {
-            return minNrOfPlayers + "," + maxNrOfPlayers + "," + creatorID;
+            Race race = raceRepo.Find(id);
+            
+            if (race.GetState() != Race.State.notStarted) {
+                return; // 400
+            }            
         }
     }
 }

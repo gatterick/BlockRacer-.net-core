@@ -6,15 +6,9 @@ using Microsoft.AspNetCore.Hosting;
 using Xunit;
 using System.Text;
 using Newtonsoft.Json;
+using BlockRacer.RestRequests;
 
 namespace BlockRacer.IntegrationTests {
-    
-    
-    public class GameRequest {
-        public string creatorID { get; set; }
-        public int maxNrOfPlayers { get; set; }
-        public int minNrOfPlayers { get; set; }
-    }
     
     public class BlockRacerIntegrationTests {
         private readonly TestServer _server;
@@ -43,20 +37,37 @@ namespace BlockRacer.IntegrationTests {
             return await response.Content.ReadAsStringAsync();
         }
         
+        private async Task<string> Login() {
+            string request = "v1/login";
+           
+           var requestData = new LoginRequest() {
+               authAccessToken = "43",
+               authProvider = 42
+           };
+           
+           string json = JsonConvert.SerializeObject(requestData).ToString();
+            var sc = new StringContent(json, 
+                Encoding.UTF8, "application/json");
+            
+    
+            var response = await _client.PostAsync(request,  sc);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsStringAsync();            
+        }
         private async Task<string> CreateGame() {
             string request = "v1/races";
            
            var requestData = new GameRequest() {
-               creatorID = "kalle",
                minNrOfPlayers = 2,
                maxNrOfPlayers = 2
            };
            
            string a = JsonConvert.SerializeObject(requestData).ToString();
-            var sc = new StringContent(a, 
+            var sc = new StringContent(a,
                 Encoding.UTF8, "application/json");
             
-    
+            Console.WriteLine(sc);
             var response = await _client.PostAsync(request,  sc);
             response.EnsureSuccessStatusCode();
 
@@ -66,6 +77,8 @@ namespace BlockRacer.IntegrationTests {
         [Fact]
         public async Task TestUseCase1() {
             // Act
+            var clientToken = Login();
+            Console.WriteLine("Logged in with Client Token:" + clientToken);
             var responseString = await CreateGame();
             Console.WriteLine(responseString);
         }
