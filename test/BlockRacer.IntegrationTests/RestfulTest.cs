@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,7 @@ namespace BlockRacer.IntegrationTests {
              _server = new TestServer(builder);
              _client = _server.CreateClient();
              
+             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "Your Oauth token");
         }
 
         private async Task<string> GetAvailableGames(string game) {
@@ -66,8 +68,7 @@ namespace BlockRacer.IntegrationTests {
            string a = JsonConvert.SerializeObject(requestData).ToString();
             var sc = new StringContent(a,
                 Encoding.UTF8, "application/json");
-            
-            Console.WriteLine(sc);
+                            
             var response = await _client.PostAsync(request,  sc);
             response.EnsureSuccessStatusCode();
 

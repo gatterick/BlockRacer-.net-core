@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BlockRacer.Models;
 using BlockRacer.Repositories;
+using BlockRacer.Repositories.Interfaces;
 using BlockRacer.Configuration;
 using BlockRacer.RestRequests;
 
@@ -10,12 +11,12 @@ namespace BlockRacer.Controllers
     [Controller]
     public class RaceController : ControllerBase
     {
-        PlayerRepository playerRepo;
+        IPlayerRepository playerRepo;
         
-        RaceRepository raceRepo;
+        IRaceRepository raceRepo;
         
-        public RaceController(PlayerRepository playerRepo,
-                                RaceRepository raceRepo) {
+        public RaceController(IPlayerRepository playerRepo,
+                              IRaceRepository raceRepo) {
             this.playerRepo = playerRepo;
             this.raceRepo = raceRepo;
         }
@@ -52,7 +53,7 @@ namespace BlockRacer.Controllers
             Race newRace = new Race(newGame.minNrOfPlayers,
                                     newGame.maxNrOfPlayers,
                                     player);
-                                    
+            System.Console.WriteLine(raceRepo);
             bool opOk = raceRepo.Create(newRace);
             return new OkResult();
         }

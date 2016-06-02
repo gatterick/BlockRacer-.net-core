@@ -1,12 +1,13 @@
 using BlockRacer.Models;
+using BlockRacer.Repositories.Interfaces;
 
 namespace BlockRacer.Repositories {
-    public class PlayerRepository {
-        public Player Find(int playerID) {
+    public class PlayerRepository : IPlayerRepository {
+        public Player Find(int player) {
             return null;
         }
         
-        public bool Create(Player newPlayer) {
+        public bool Add(Player newPlayer) {
             
             Player player = Find(newPlayer.GetId());
             using (var context = new BRDbContext())

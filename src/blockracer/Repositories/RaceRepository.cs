@@ -1,10 +1,10 @@
 using BlockRacer.Models;
-using BlockRacer;
+using BlockRacer.Repositories.Interfaces;
 
 namespace BlockRacer.Repositories {
-    public class RaceRepository {
+    public class RaceRepository : IRaceRepository {
         
-        BRDbContext db;
+        public BRDbContext db { get; set; }
         
         public RaceRepository(BRDbContext db) {
             this.db = db;
