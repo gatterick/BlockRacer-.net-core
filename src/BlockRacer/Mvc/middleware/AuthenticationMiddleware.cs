@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace BlockRacer.Mvc.Middleware {
 
@@ -33,6 +34,34 @@ namespace BlockRacer.Mvc.Middleware {
                 return;            
             }
             
+            HttpClient client = new HttpClient();
+            
+            string fbUrl = " https://graph.facebook.com/me?access_token=" + token;
+                        
+            using (HttpResponseMessage response = await client.GetAsync(fbUrl)) {
+                using (HttpContent content = response.Content)
+            	{
+                    // ... Read the string.
+                    string result = await content.ReadAsStringAsync();
+
+                    // ... Display the result.
+                    if (result == null) {
+                        context.Response.StatusCode = 401; //Unauthorized
+                        return;
+                    }
+                    
+                    System.Console.WriteLine(result);
+                    System.Console.WriteLine(result.Contains("Invalid"));
+                    if (result.Contains("Invalid")) {
+                        context.Response.StatusCode = 401; //Unauthorized
+                        return;                       
+                    }
+                    else if (result.Contains("Malformed")) {
+                        context.Response.StatusCode = 401; //Unauthorized
+                        return;                       
+                    }
+                }
+            }
             // Validate against facebook. TODO: in future also Google.
             await _next.Invoke(context);
         }
