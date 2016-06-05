@@ -2,18 +2,23 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.Net.Http;
 
+using BlockRacer.Mvc.Models;
+using BlockRacer.Repositories.Interfaces;
+
 namespace BlockRacer.Mvc.Middleware {
-
-    public class AuthenticationMiddleware  
+    public class AuthenticationMiddleware
     {
-        private readonly RequestDelegate _next;
+        private readonly RequestDelegate next;
 
-        public AuthenticationMiddleware(RequestDelegate next)
-        {
-            _next = next;
+        private readonly IPlayerRepository playerRepo;
+        
+        public AuthenticationMiddleware(RequestDelegate next,
+                                        IPlayerRepository playerRepo) {
+            this.next = next;
+            this.playerRepo = playerRepo;
         }
         
-        public async Task Invoke(HttpContext context)  
+        public async Task Invoke(HttpContext context)
         {
             if (context.Request.Headers.Keys.Contains("X-Not-Authorized"))
             {
@@ -22,6 +27,21 @@ namespace BlockRacer.Mvc.Middleware {
             }
             
             string token = context.Request.Headers["Authorization"];
+            
+            // First check if it's a 'local token'. i.e. one that we
+            // have given out earlier and if it's still valid.
+            Player player = playerRepo.Find(token);
+            
+            if (player == null) {
+                // This is a facebook token since we don't save these in
+                // the database, only our own created ones. Let's validate this 
+                // one and continue by handing out our own token.
+            } else {
+                // The token is our own created one. Let's make sure it's
+                // still valid, otherwise the user needs to reauthenticate it.
+            }
+            
+            
             
             if (token == null) {
                 context.Response.StatusCode = 401; //Unauthorized
@@ -41,29 +61,24 @@ namespace BlockRacer.Mvc.Middleware {
             using (HttpResponseMessage response = await client.GetAsync(fbUrl)) {
                 using (HttpContent content = response.Content)
             	{
-                    // ... Read the string.
                     string result = await content.ReadAsStringAsync();
 
-                    // ... Display the result.
                     if (result == null) {
-                        context.Response.StatusCode = 401; //Unauthorized
+                        context.Response.StatusCode = 401;
                         return;
-                    }
-                    
-                    System.Console.WriteLine(result);
-                    System.Console.WriteLine(result.Contains("Invalid"));
-                    if (result.Contains("Invalid")) {
-                        context.Response.StatusCode = 401; //Unauthorized
+                    } else if (result.Contains("Invalid")) {
+                        context.Response.StatusCode = 401;
                         return;                       
-                    }
-                    else if (result.Contains("Malformed")) {
-                        context.Response.StatusCode = 401; //Unauthorized
+                    } else if (result.Contains("Malformed")) {
+                        context.Response.StatusCode = 401;
                         return;                       
                     }
                 }
             }
-            // Validate against facebook. TODO: in future also Google.
-            await _next.Invoke(context);
+            
+            context.Items.Add("Player", player);
+            
+            await next.Invoke(context);
         }
     }
 }

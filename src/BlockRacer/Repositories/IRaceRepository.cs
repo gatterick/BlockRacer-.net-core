@@ -1,4 +1,4 @@
-using BlockRacer.Models;
+using BlockRacer.Mvc.Models;
 
 namespace BlockRacer.Repositories.Interfaces {
     public interface IRaceRepository {
@@ -6,7 +6,7 @@ namespace BlockRacer.Repositories.Interfaces {
         
         bool Add(Race race);
         
-        bool Delete(string id);
+        bool Delete(Race race);
         
         bool Create(Race race);
         

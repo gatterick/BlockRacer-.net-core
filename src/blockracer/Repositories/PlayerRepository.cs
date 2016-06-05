@@ -1,9 +1,9 @@
-using BlockRacer.Models;
+using BlockRacer.Mvc.Models;
 using BlockRacer.Repositories.Interfaces;
 
 namespace BlockRacer.Repositories {
     public class PlayerRepository : IPlayerRepository {
-        public Player Find(int player) {
+        public Player Find(string id) {
             return null;
         }
         

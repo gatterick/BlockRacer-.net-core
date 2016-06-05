@@ -1,4 +1,4 @@
-using BlockRacer.Models;
+using BlockRacer.Mvc.Models;
 
 namespace BlockRacer.Configuration {
     

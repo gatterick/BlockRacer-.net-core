@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using BlockRacer.Repositories;
-using BlockRacer.Models;
+using BlockRacer.Mvc.Models;
 
-using BlockRacer.RestRequests;
-using BlockRacer.RestResponses;
+using BlockRacer.Mvc.Rest.Requests;
+using BlockRacer.Mvc.Rest.Responses;
 
-namespace BlockRacer.Controllers
+namespace BlockRacer.MVc.Controllers
 {
     [Route("/v1/login")]
     [Controller]
@@ -24,7 +24,7 @@ namespace BlockRacer.Controllers
         [HttpPost]
         public IActionResult Login([FromBody]LoginRequest loginReq) {
             /* Query from the authentication provider. */
-            int nickname = 0; // nicknames are unique in google and FB, but can collide between the services themselves?
+            string nickname = ""; // nicknames are unique in google and FB?, but can collide between the services themselves?
             
             // Validate access token against authentication provider.
             bool validToken = true; // TODO

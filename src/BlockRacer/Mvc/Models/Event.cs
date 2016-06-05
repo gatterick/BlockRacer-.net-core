@@ -1,6 +1,6 @@
 using System;
 
-namespace BlockRacer.Models {
+namespace BlockRacer.Mvc.Models {
     public class Event {
         public enum Type { gameStarted, playerLeft, playerMovement, gameOver }
         

@@ -1,4 +1,4 @@
-using BlockRacer.Models;
+using BlockRacer.Mvc.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlockRacer {
@@ -8,7 +8,7 @@ namespace BlockRacer {
         public DbSet<Car> Cars { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<RaceResult> RaceResults { get; set; }
-            
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Filename=./blockracer.db");

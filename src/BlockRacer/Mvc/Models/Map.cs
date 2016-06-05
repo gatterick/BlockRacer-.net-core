@@ -1,4 +1,4 @@
-namespace BlockRacer.Models {
+namespace BlockRacer.Mvc.Models {
     public class Map {
         private int[,] map { get; set; }
         

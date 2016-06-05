@@ -1,4 +1,4 @@
-using BlockRacer.Models;
+using BlockRacer.Mvc.Models;
 using BlockRacer.Repositories.Interfaces;
 
 namespace BlockRacer.Repositories {
@@ -17,7 +17,7 @@ namespace BlockRacer.Repositories {
             return true;
         }
         
-        public bool Delete(string id) {
+        public bool Delete(Race race) {
             return true;
         }
         

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace BlockRacer.Models {
+namespace BlockRacer.Mvc.Models {
     
     ///<summary>Represents an race.</summary>
     public class Race {

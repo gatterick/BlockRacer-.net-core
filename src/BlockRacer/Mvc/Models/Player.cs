@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BlockRacer.Models {
+namespace BlockRacer.Mvc.Models {
     public class Player {
         public enum TypeOfUser { Freemium, Premium }
         
@@ -19,16 +19,20 @@ namespace BlockRacer.Models {
         
         private int authenticationProvider { get; set; }
         
-        private int id { get; set; }
+        private string accessToken { get; set; }
         
-        public Player(int id, int authenticationProvider) {
+        private DateTime accessTokenValidUntil { get; set; }
+                
+        private string id { get; set; }
+        
+        public Player(string id, int authenticationProvider) {
             this.id = id;
             this.authenticationProvider = authenticationProvider;
             userType = TypeOfUser.Freemium;
             races = new List<Race>();
         }
         
-        public int GetId() {
+        public string GetId() {
             return id;
         }
         
