@@ -1,4 +1,5 @@
 using BlockRacer.Mvc.Models;
+using System.Collections.Generic;
 
 namespace BlockRacer.Repositories.Interfaces {
     public interface IRaceRepository {
@@ -8,7 +9,8 @@ namespace BlockRacer.Repositories.Interfaces {
         
         bool Delete(Race race);
         
-        bool Create(Race race);
+        bool Update(Race race);
         
+        IEnumerable<Race> Query();
     }
 }

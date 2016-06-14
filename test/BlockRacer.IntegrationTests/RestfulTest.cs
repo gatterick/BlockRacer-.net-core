@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Xunit;
 using System.Text;
 using Newtonsoft.Json;
-using BlockRacer.RestRequests;
+using BlockRacer.Mvc.Rest.Requests;
 
 namespace BlockRacer.IntegrationTests {
     
@@ -44,7 +44,7 @@ namespace BlockRacer.IntegrationTests {
            
            var requestData = new LoginRequest() {
                authAccessToken = "43",
-               authProvider = 42
+               authProvider = "Facebook"
            };
            
            string json = JsonConvert.SerializeObject(requestData).ToString();
@@ -60,7 +60,7 @@ namespace BlockRacer.IntegrationTests {
         private async Task<string> CreateGame() {
             string request = "v1/races";
            
-           var requestData = new GameRequest() {
+           var requestData = new CreateGameRequest() {
                minNrOfPlayers = 2,
                maxNrOfPlayers = 2
            };
@@ -91,7 +91,5 @@ namespace BlockRacer.IntegrationTests {
             
             Console.WriteLine(responseString);
         }
-
-    } 
-    
+    }
 }

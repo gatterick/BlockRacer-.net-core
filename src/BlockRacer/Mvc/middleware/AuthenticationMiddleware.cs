@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
-using System.Net.Http;
-
+using System;
+using System.Text;
+using System.Collections.Generic;
+using System.IO;
 using BlockRacer.Mvc.Models;
 using BlockRacer.Repositories.Interfaces;
 
@@ -20,62 +22,46 @@ namespace BlockRacer.Mvc.Middleware {
         
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Headers.Keys.Contains("X-Not-Authorized"))
-            {
+            if (context.Request.Headers.Keys.Contains("X-Not-Authorized")) {
                 context.Response.StatusCode = 401; //Unauthorized
+                context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes( "{ 'error':'No Access Token provided for authentication.'}"));
                 return;
             }
             
             string token = context.Request.Headers["Authorization"];
             
-            // First check if it's a 'local token'. i.e. one that we
-            // have given out earlier and if it's still valid.
-            Player player = playerRepo.Find(token);
-            
-            if (player == null) {
-                // This is a facebook token since we don't save these in
-                // the database, only our own created ones. Let's validate this 
-                // one and continue by handing out our own token.
-            } else {
-                // The token is our own created one. Let's make sure it's
-                // still valid, otherwise the user needs to reauthenticate it.
-            }
-            
-            
-            
-            if (token == null) {
+            if (token == "") {
                 context.Response.StatusCode = 401; //Unauthorized
-                return;
-                
+                context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes( "{ 'error':'No Access Token provided for authentication.'}"));
+                return;                
             }
 
+            List<Player> playerFound = playerRepo.Query("tokenId=" + token);
+
+            // Must only be One result
+            if (playerFound.Count != 1) {
+                // If no player found with the token Id we need to check if 
+                // it's a valid Facebook token.
+                context.Response.StatusCode = 401;
+                context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes( "{ 'error':'Invalid Access Token.'}"));
+                return;
+            }
+
+            Player player = playerFound[0];
+            
             if (!token.StartsWith("Bearer")) {
                 context.Response.StatusCode = 401; //Unauthorized
                 return;            
             }
-            
-            HttpClient client = new HttpClient();
-            
-            string fbUrl = " https://graph.facebook.com/me?access_token=" + token;
-                        
-            using (HttpResponseMessage response = await client.GetAsync(fbUrl)) {
-                using (HttpContent content = response.Content)
-            	{
-                    string result = await content.ReadAsStringAsync();
 
-                    if (result == null) {
-                        context.Response.StatusCode = 401;
-                        return;
-                    } else if (result.Contains("Invalid")) {
-                        context.Response.StatusCode = 401;
-                        return;                       
-                    } else if (result.Contains("Malformed")) {
-                        context.Response.StatusCode = 401;
-                        return;                       
-                    }
-                }
+            // The token is our own created one. Let's make sure it's
+            // still valid, otherwise the user needs to reauthenticate it.
+            if (DateTime.Now > player.GetAccessTokenExpirationDate()) {
+                context.Response.StatusCode = 401;
+                context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes( "{ 'error':'Access Token expired. Please login again.'}"));
+                return;
             }
-            
+                        
             context.Items.Add("Player", player);
             
             await next.Invoke(context);

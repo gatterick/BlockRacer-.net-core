@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 namespace BlockRacer {
     public class BRDbContext  : DbContext {
         public DbSet<Race> Races { get; set; }
+        
+        public DbSet<Map> Maps { get; set; }
+        
         public DbSet<Player> Players { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Event> Events { get; set; }

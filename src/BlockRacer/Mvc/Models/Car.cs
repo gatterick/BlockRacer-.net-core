@@ -11,6 +11,8 @@ namespace BlockRacer.Mvc.Models {
         
         private int accelerationY { get; set; }
         
+        public bool Crashed { get; set; }
+        
         public Car(Player driver) {
             this.driver = driver;
         }
@@ -19,5 +21,7 @@ namespace BlockRacer.Mvc.Models {
             // Verify that the move is correct
             return true;
         }
+        
+        
     }
 }

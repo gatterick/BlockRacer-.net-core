@@ -14,7 +14,7 @@ namespace BlockRacer.Mvc.Models {
         private List<Player> players { get; set; }
         
         // Player who created the game.
-        private Player creator { get; set; }
+        private Player owner { get; set; }
         
         // The map that is used for the race.
         private Map map { get; set; }
@@ -50,19 +50,19 @@ namespace BlockRacer.Mvc.Models {
         /// <param name="nrOfMinPlayers">Minimum nr of people needed</param>
         /// <param name="nrOfMaxPlayers">Maximum nr of people allowed</param>
         /// <param name="creator">The player who created the game</param>
-        public Race(int nrOfMinPlayers, int nrOfMaxPlayers, Player creator) {
+        public Race(int nrOfMinPlayers, int nrOfMaxPlayers, Player owner) {
             this.guid = System.Guid.NewGuid();
             this.currentState = State.notStarted;
             this.nrOfJoinedPlayers = 0;
             this.nrOfMinPlayers = nrOfMinPlayers;
             this.nrOfMaxPlayers = nrOfMaxPlayers;
-            this.creator = creator;
+            this.owner = owner;
             this.cars = new Dictionary<Player, Car>();
             this.events = new List<Event>();
             this.players = new List<Player>();
         }
         
-        public bool AddPlayer(Player player) {
+        public bool Add(Player player) {
             if (nrOfJoinedPlayers >= nrOfMaxPlayers - 1) {
                 return false;
             }
@@ -80,8 +80,12 @@ namespace BlockRacer.Mvc.Models {
         
         // Removes a player from a game. A new player can't join
         // an existing game so we don't subtract the nr of players.
-        public bool RemovePlayer(Player player) {
+        public bool Remove(Player player) {
+            
+            
             return players.Remove(player); // works?
+            
+            
         }
         
         public List<Event> GetEvents() {
@@ -98,7 +102,7 @@ namespace BlockRacer.Mvc.Models {
         ///<param name="player">The player that is associated with the event</param>
         ///<param name="proposedEvent">The event to be added to the race</param>
         ///<returns>true if the event was added, otherwise false</returns>
-        public bool AddEvent(Player player, Event proposedEvent) {
+        public bool Add(Player player, Event proposedEvent) {
             return true;
         }
         
@@ -123,6 +127,35 @@ namespace BlockRacer.Mvc.Models {
         
         public Car GetCar(Player player) {
             return cars[player];
+        }
+        
+        public Player getOwner() {
+            return owner;
+        }
+        
+        public bool UpdatePlayer(Player player, int newX, int newY) {
+            if (!playersLeftThisTurn.Contains(player)) {
+                return false;
+            }
+            
+            // Is the coordinates within the race?
+            Map.TileType tile = map.GetTile(newX, newY);
+            
+            Car car = cars[player];            
+
+            if (tile != Map.TileType.ROAD) {
+                car.Crashed = true;
+                return true;
+            }
+            
+            // Valid move with regards to current velocity?
+            bool movementOk = car.Drive(newX, newY);
+            if (!movementOk) {
+                return false;
+            }
+            
+            playersLeftThisTurn.Remove(player);
+            return true;
         }
     }
 }

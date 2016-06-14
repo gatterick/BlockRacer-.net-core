@@ -1,4 +1,5 @@
 using BlockRacer.Mvc.Models;
+using System.Collections.Generic;
 
 namespace BlockRacer.Repositories.Interfaces {
     public interface IPlayerRepository {
@@ -10,5 +11,6 @@ namespace BlockRacer.Repositories.Interfaces {
         
         bool Update(Player player);
         
+        List<Player> Query(string query);
     }
 }

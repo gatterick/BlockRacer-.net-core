@@ -24,6 +24,7 @@ namespace BlockRacer {
             services.AddSingleton<BRDbContext>(new BRDbContext());
             services.AddTransient<IPlayerRepository, PlayerRepository>();
             services.AddTransient<IRaceRepository, RaceRepository>();
+            services.AddTransient<IMapRepository, MapRepository>();
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,6 +32,7 @@ namespace BlockRacer {
             app.UseMiddleware<AuthenticationMiddleware>();
 
             app.UseMvc();
+            
         }
         
         public static void Main(string[] args) {

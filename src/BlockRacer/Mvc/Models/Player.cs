@@ -7,7 +7,7 @@ namespace BlockRacer.Mvc.Models {
         
         private int nrOfCompletedGames { get; set; }
         
-        private int nrOfDroppedGames { get; set; }
+        public int nrOfDroppedGames { get; set; }
                 
         private List<Race> races { get; set; }
      
@@ -17,23 +17,23 @@ namespace BlockRacer.Mvc.Models {
         
         private TypeOfUser userType { get; set; }
         
-        private int authenticationProvider { get; set; }
+        private string authenticationProvider { get; set; }
         
         private string accessToken { get; set; }
         
         private DateTime accessTokenValidUntil { get; set; }
                 
-        private string id { get; set; }
+        public string Id { get; set; }
         
-        public Player(string id, int authenticationProvider) {
-            this.id = id;
+        private string name { get; set; }
+        
+        public Player(string name, string id, string authenticationProvider) {
+            this.name = name;
+            this.Id = id;
             this.authenticationProvider = authenticationProvider;
             userType = TypeOfUser.Freemium;
             races = new List<Race>();
-        }
-        
-        public string GetId() {
-            return id;
+            accessTokenValidUntil = DateTime.Now.AddHours(24);
         }
         
         public List<Race> GetOngoingGames() {
@@ -48,8 +48,12 @@ namespace BlockRacer.Mvc.Models {
             return userType;
         }
         
-        public int getAuthProvider() {
+        public string getAuthProvider() {
             return authenticationProvider;
+        }
+        
+        public DateTime GetAccessTokenExpirationDate() {
+            return accessTokenValidUntil;
         }
     }
 }

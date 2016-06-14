@@ -6,9 +6,9 @@ using System;
 
 namespace BlockRacer.Mvc.Controllers {
     public class PlayerController : ControllerBase {
-        public void Get(string guid) {
-            if (guid != null) {
-                Console.WriteLine("received guid;" + guid);
+        public void Get(string id) {
+            if (id != null) {
+                Console.WriteLine("received guid;" + id);
             }
             else {
                 Console.WriteLine("Received no guid");
