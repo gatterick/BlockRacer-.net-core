@@ -12,28 +12,28 @@ using BlockRacer.Mvc.Rest.Requests;
 namespace BlockRacer.IntegrationTests {
     
     public class BlockRacerIntegrationTests {
-        private readonly TestServer _server;
-        private readonly HttpClient _client;
+        private readonly TestServer server;
+        private readonly HttpClient client;
         
         public BlockRacerIntegrationTests() {
              var builder = new WebHostBuilder()
                 .UseStartup<Startup>();
                 
-             _server = new TestServer(builder);
-             _client = _server.CreateClient();
+             server = new TestServer(builder);
+             client = server.CreateClient();
              
-             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "Your Oauth token");
+             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "Your Oauth token");
         }
 
         private async Task<string> GetAvailableGames(string game) {
-            RequestBuilder req = _server.CreateRequest("v1/races");
+            RequestBuilder req = server.CreateRequest("v1/races");
             
             if (game != "") {
                 game = "/" + game;
             }
            string request = "v1/races"+game;
 
-            var response = await _client.GetAsync(request);
+            var response = await client.GetAsync(request);
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsStringAsync();
@@ -51,7 +51,7 @@ namespace BlockRacer.IntegrationTests {
             var sc = new StringContent(json, 
                 Encoding.UTF8, "application/json");
             
-            var response = await _client.PostAsync(request,  sc);
+            var response = await client.PostAsync(request,  sc);
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsStringAsync();            
@@ -68,7 +68,7 @@ namespace BlockRacer.IntegrationTests {
             var sc = new StringContent(a,
                 Encoding.UTF8, "application/json");
                             
-            var response = await _client.PostAsync(request,  sc);
+            var response = await client.PostAsync(request,  sc);
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsStringAsync();

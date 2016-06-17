@@ -38,6 +38,12 @@ Request: Following JSON body must exist in the POST
 }
 
 Response: Following JSON body is returned.
+
 {
 }
 /v1/races
+
+TODO:
+* Fix overall uuids for players and not use db ID for this purpose.
+* Generate Swagger and see how it looks like.
+* create test user from test-case init and clear database before doing this.

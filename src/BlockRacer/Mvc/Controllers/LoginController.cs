@@ -42,7 +42,7 @@ namespace BlockRacer.Mvc.Controllers
                 return new UnauthorizedResult(); // Auth. denied
             }
             /* Check if the User exists. */
-            Player player = playerRepo.Find(nickname);
+            Player player = playerRepo.Find(1234);
             
             if (player == null) {
                 // first time login.
