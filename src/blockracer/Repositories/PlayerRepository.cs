@@ -1,6 +1,7 @@
 using BlockRacer.Mvc.Models;
 using BlockRacer.Repositories.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BlockRacer.Repositories {
     public class PlayerRepository : IPlayerRepository {
@@ -11,16 +12,21 @@ namespace BlockRacer.Repositories {
             this.db = db;
         }
 
-        public Player Find(string id) {
+        ///<summary>Find a player according to their unique id OR the access token
+        /// handed out by the Login endpoint.
+        /// </summary>
+        /// <param name="idOrAccessToken">Unique id or access token</param>
+        /// <returns>Instance of the Player</returns>
+        public Player Find(long idOrAccessToken) {
+            IEnumerable<Player> player = db.Players.Where(p => p.Id == idOrAccessToken).AsEnumerable(); //TODO:fix
             return null;
         }
         
         public bool Add(Player newPlayer) {
             
-            Player player = Find(newPlayer.Id);
             using (var context = new BRDbContext())
             {
-                context.Players.Add(player);
+                context.Players.Add(newPlayer);
                 context.SaveChanges();
             }
             return true;
@@ -34,7 +40,7 @@ namespace BlockRacer.Repositories {
             return true;
         }
         
-        public List<Player> Query(string query) {
+        public List<Player> Query() {
             return new List<Player>();
         }
     }

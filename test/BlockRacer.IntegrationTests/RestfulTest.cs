@@ -51,7 +51,6 @@ namespace BlockRacer.IntegrationTests {
             var sc = new StringContent(json, 
                 Encoding.UTF8, "application/json");
             
-    
             var response = await _client.PostAsync(request,  sc);
             response.EnsureSuccessStatusCode();
 
@@ -75,6 +74,9 @@ namespace BlockRacer.IntegrationTests {
             return await response.Content.ReadAsStringAsync();
         }
         
+        /// <summary> 
+        /// Tests the following functional use-case:
+        /// <summary>
         [Fact]
         public async Task TestUseCase1() {
             // Act

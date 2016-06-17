@@ -22,9 +22,9 @@ namespace BlockRacer.Configuration {
     public static class Config {
         public static IConfiguration GetConfiguration(Player player) {
             IConfiguration config = null;
-            if (player.getUserType() == Player.TypeOfUser.Freemium) {
+            if (player.userType == Player.TypeOfUser.Freemium) {
                 config = new Freemium();
-            } else if (player.getUserType() == Player.TypeOfUser.Premium) {
+            } else if (player.userType == Player.TypeOfUser.Premium) {
                 config = new Premium();
             } else {
                 // assert here, causing a 500.

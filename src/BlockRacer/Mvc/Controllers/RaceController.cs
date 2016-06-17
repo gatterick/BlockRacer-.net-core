@@ -4,13 +4,26 @@ using BlockRacer.Repositories.Interfaces;
 using BlockRacer.Configuration;
 using BlockRacer.Mvc.Rest.Requests;
 using BlockRacer.Mvc.Rest.Responses;
+using BlockRacer.Mvc.Controllers.Resources;
 
+using Swashbuckle.SwaggerGen.Annotations;
 using System.Collections.Generic;
+using Lohmann.HALight;
 
+/// <summary>
+/// Each Controller endpoint has the following logic.
+/// 1. Validate client input.
+/// 2. Modify the Domain model.
+/// 3. Save the Domain model with the help of repositories.
+/// 4. Map the domain model to the Rest Resources that client consumes.
+/// 5. Send answer to client.
+/// </summary>
 namespace BlockRacer.Mvc.Controllers
 {
+    // TODO: Is there a better way of handling versions?
     [Route("/v1/races")]
     [Controller]
+    [Produces("application/json")]
     public class RaceController : ControllerBase
     {
         IPlayerRepository playerRepo;
@@ -24,12 +37,16 @@ namespace BlockRacer.Mvc.Controllers
         }
         
         [HttpGet]
+        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(List<RaceResource>))]
         public IActionResult Get() {
-            IEnumerable<Race> races = raceRepo.Query(); //TODO: LINQ?
+            IEnumerable<Race> races = raceRepo.Query();
+            
             return new ObjectResult(races);
         }
         
         [HttpGet("{id}")]
+        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(RaceResource))]
+        [SwaggerResponse(System.Net.HttpStatusCode.NotFound, Type = null)]
         public IActionResult Get(string id) {
             
             Race race = raceRepo.Find(id);
@@ -42,25 +59,36 @@ namespace BlockRacer.Mvc.Controllers
         }
         
         [HttpPost]
+        [SwaggerResponse(System.Net.HttpStatusCode.BadRequest, Type = null)]
+        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(RaceResource))]
         public IActionResult Post([FromBody] CreateGameRequest newGame) {
             Player player = (Player)HttpContext.Items["Player"];
 
-            int nrOfOngoingGames = player.GetNrOfOngoingGames();
+            // Verify that everything is OK.
+            int nrOfOngoingGames = player.races.Count;
             int nrofAllowedGames = 0;
             IConfiguration config =  Config.GetConfiguration(player);
             
             int nrOfAllowedGames = config.GetMaxNrOfParalellGames();
             
-            if (player.GetNrOfOngoingGames() > nrofAllowedGames) {
-                return new OkResult();// 400 not allowed operation
+            if (player.races.Count > nrofAllowedGames) {
+                return new OkResult();// TODO:400 not allowed operation
             }
 
+            // Add to repository.
             Race newRace = new Race(newGame.minNrOfPlayers,
                                     newGame.maxNrOfPlayers,
                                     player);
             
             bool opOk = raceRepo.Add(newRace);
-            return new ObjectResult(null); //TODO.
+            
+            // Map to Race resource and send back to client.
+            RaceResource race = new RaceResource {
+                Id = newRace.Id
+            };
+            
+            //race.Relations.Add(Link.CreateLink("/v1/players"))
+            return new OkObjectResult(race);
         }
 
         [HttpPut("{id}")]
@@ -87,9 +115,10 @@ namespace BlockRacer.Mvc.Controllers
                 int newY = gameUpdateRequest.y;
                 // Check if user are allowed to make move.
                 bool allowed = race.UpdatePlayer(player, newX, newY);
-                if (allowed == true) {
-                    return new OkResult();
+                if (allowed != true) {
+                    return new BadRequestResult();
                 }
+            } else {
                 return new BadRequestResult();
             }
             return new OkResult();

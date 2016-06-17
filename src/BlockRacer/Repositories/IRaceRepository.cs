@@ -11,6 +11,6 @@ namespace BlockRacer.Repositories.Interfaces {
         
         bool Update(Race race);
         
-        IEnumerable<Race> Query();
+        List<Race> Query();
     }
 }

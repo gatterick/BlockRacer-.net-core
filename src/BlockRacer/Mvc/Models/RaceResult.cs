@@ -3,19 +3,22 @@ using System.Collections.Generic;
 
 namespace BlockRacer.Mvc.Models {
     public class RaceResult {
-        Player creator;
+        public Player creator { get; set; }
         
-        Guid raceGuid;
+        public Guid raceGuid { get; set; }
         
-        List<PlayerResult> result;
+        public string Id { get; set; }
+
+        public List<PlayerResult> result { get; set; }
         
     }
     
-    class PlayerResult {
-        int nrOfTurns;
+    public class PlayerResult {
+        public string Id { get; set; }
+        public int nrOfTurns { get; set; }
         
-        int position;
+        public int position { get; set; }
         
-        Player player;
+        public Player player { get; set; }
     }
 }

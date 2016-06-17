@@ -8,7 +8,7 @@ namespace BlockRacer.Mvc.Models {
         public enum State { notStarted, ongoing, finished, aborted}
         
         // Unique id for this race.
-        private System.Guid guid { get; set; }
+        public string Id { get; set; }
         
         // Contains the list with players participating.
         private List<Player> players { get; set; }
@@ -51,7 +51,7 @@ namespace BlockRacer.Mvc.Models {
         /// <param name="nrOfMaxPlayers">Maximum nr of people allowed</param>
         /// <param name="creator">The player who created the game</param>
         public Race(int nrOfMinPlayers, int nrOfMaxPlayers, Player owner) {
-            this.guid = System.Guid.NewGuid();
+            this.Id = System.Guid.NewGuid().ToString();
             this.currentState = State.notStarted;
             this.nrOfJoinedPlayers = 0;
             this.nrOfMinPlayers = nrOfMinPlayers;
@@ -139,11 +139,11 @@ namespace BlockRacer.Mvc.Models {
             }
             
             // Is the coordinates within the race?
-            Map.TileType tile = map.GetTile(newX, newY);
+            TileType.Tile tile = map.GetTile(newX, newY);
             
             Car car = cars[player];            
 
-            if (tile != Map.TileType.ROAD) {
+            if (tile != TileType.Tile.ROAD) {
                 car.Crashed = true;
                 return true;
             }

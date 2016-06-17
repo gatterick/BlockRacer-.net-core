@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 using BlockRacer.Mvc.Rest.Requests;
 using System;
 
+/// Each Controller endpoint has the following logic.
+/// 1. Validate client input.
+/// 2. Modify the Domain model.
+/// 3. Save the Domain model with the help of repositories.
+/// 4. Map the domain model to the Rest Resources that client consumes.
+/// 5. Send answer to client.
 namespace BlockRacer.Mvc.Controllers
 {
     [Route("/v1/login")]
@@ -40,16 +46,16 @@ namespace BlockRacer.Mvc.Controllers
             
             if (player == null) {
                 // first time login.
-                player = new Player(nickname, "TODO", loginReq.authProvider);
+                player = new Player(nickname, 1234, loginReq.authProvider);
             }
             
             // Is existing token valid?
-            if (player.GetAccessTokenExpirationDate() > DateTime.Now) {
+            if (player.accessTokenValidUntil > DateTime.Now) {
                 // Do nothing.
                 return new OkResult();
             }
             
-            if (loginReq.authProvider != player.getAuthProvider()) {
+            if (loginReq.authProvider != player.authenticationProvider) {
                 return new UnauthorizedResult(); //TODO: Find better error code Must stick with one authentication provider for now.
             }
             

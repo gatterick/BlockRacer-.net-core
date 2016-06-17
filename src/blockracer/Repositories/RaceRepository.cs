@@ -32,7 +32,7 @@ namespace BlockRacer.Repositories {
             return true;
         }
         
-        public IEnumerable<Race> Query() {
+        public List<Race> Query() {
             return null;
         }
     }

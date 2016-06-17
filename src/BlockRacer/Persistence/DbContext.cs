@@ -14,7 +14,33 @@ namespace BlockRacer {
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Filename=./blockracer.db");
+            optionsBuilder.UseSqlite("Filename=/Users/gatterick/projects/blockracer2.db");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Player>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<Map>()
+                .HasKey(m => m.Id);
+
+            modelBuilder.Entity<Race>()
+                .HasKey(r => r.Id);
+
+            modelBuilder.Entity<RaceResult>()
+                .HasKey(rr => rr.Id);
+
+             modelBuilder.Entity<PlayerResult>()
+                .HasKey(rr => rr.Id);
+
+           modelBuilder.Entity<Event>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<Car>()
+                .HasKey(c => c.Id);
+            
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

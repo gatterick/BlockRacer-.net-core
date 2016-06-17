@@ -5,6 +5,8 @@ Introduction:
 Blockracer is a fast-pace (or slow if you prefer that) turn-based game where
 each player controls a car on a race-track.
 
+Explanation how the game works;
+
 Specification:
 
 The REST-api is as follows; as long as the client fulfills this it will be 
@@ -16,8 +18,26 @@ The following endpoints exists
 <url>/v1/players
 <url>/v1/races
 
-Each endpoint is separate from eachother and by querying the individual endpoints
+Each endpoint supports the HAL standard for content discovery.
+Each endpoint is separate from eacho ther and by querying the individual endpoints
 
 
 - How to start my own Blockracer server:
 It's available as a docker-image from dockerhub.
+
+===== Race endpoint (<url>/v1/races) =====
+
+Url                 Http Verb           Description
+/v1/races           [GET]               Gets a nr of open games not started.
+
+/v1/races           [POST]              Creates a new game.
+
+Request: Following JSON body must exist in the POST
+
+{
+}
+
+Response: Following JSON body is returned.
+{
+}
+/v1/races

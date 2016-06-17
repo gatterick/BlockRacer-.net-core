@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BlockRacer.Repositories.Interfaces {
     public interface IPlayerRepository {
-        Player Find(string accessToken);
+        Player Find(long accessToken);
         
         bool Add(Player player);
         
@@ -11,6 +11,6 @@ namespace BlockRacer.Repositories.Interfaces {
         
         bool Update(Player player);
         
-        List<Player> Query(string query);
+        List<Player> Query();
     }
 }

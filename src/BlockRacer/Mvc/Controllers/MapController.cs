@@ -35,7 +35,7 @@ namespace BlockRacer.Mvc.Controllers {
             var mapResource = new MapResource {
                 Id = map.Id,
                 Name = map.Name,
-                MapLayout = map.MapLayout  
+                MapLayout = map.GetMapAsMatrix()  
             };
             
             //mapResource.Relations.Add(Link.CreateLink(Url.Link("UserDetailsRoute", new {id = map.Creator.Id})));

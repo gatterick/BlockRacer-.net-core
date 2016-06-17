@@ -7,21 +7,36 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using BlockRacer.Mvc.Middleware;
+using Microsoft.Extensions.Logging;
+using Lohmann.HALight.Formatters;
 
 namespace BlockRacer {
     public class Startup {
    
+        private readonly ILoggerFactory _loggerFactory;
+
+        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            _loggerFactory = loggerFactory;
+        }
+
         public void ConfigureServices(IServiceCollection services) {
             // Add framework services.
             services.AddDbContext<BRDbContext>();
             
             //only for dev.
-            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
-                                                                            .AllowAnyMethod()
-                                                                            .AllowAnyHeader()));     
-            services.AddMvc();
+            services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));     
             
-            services.AddSingleton<BRDbContext>(new BRDbContext());
+            var logger = _loggerFactory.CreateLogger<HalInputFormatter>();
+            
+            services.AddMvc(options =>
+            {                
+                options.InputFormatters.Add(new HalInputFormatter(logger));
+                options.OutputFormatters.Add(new HalOutputFormatter());
+            });
+
+            services.AddSwaggerGen();
+
             services.AddTransient<IPlayerRepository, PlayerRepository>();
             services.AddTransient<IRaceRepository, RaceRepository>();
             services.AddTransient<IMapRepository, MapRepository>();
@@ -32,7 +47,8 @@ namespace BlockRacer {
             app.UseMiddleware<AuthenticationMiddleware>();
 
             app.UseMvc();
-            
+            app.UseSwaggerGen();
+            app.UseSwaggerUi();
         }
         
         public static void Main(string[] args) {

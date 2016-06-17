@@ -33,7 +33,7 @@ namespace BlockRacer.Mvc.Rest.Requests {
     }
     
     public class CreateMapRequest {
-        public int[,] MapLayout { get; set; }
+        public int[][] MapLayout { get; set; }
         
         public string Name { get; set; }
     }
