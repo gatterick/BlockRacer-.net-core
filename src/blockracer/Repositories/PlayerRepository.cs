@@ -23,7 +23,6 @@ namespace BlockRacer.Repositories {
         }
         
         public bool Add(Player newPlayer) {
-            
             using (var context = new BRDbContext())
             {
                 context.Players.Add(newPlayer);

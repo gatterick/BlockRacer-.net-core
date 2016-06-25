@@ -1,7 +1,7 @@
 namespace BlockRacer.Mvc.Rest.Requests {
 
     public class LoginRequest {
-        public string authAccessToken { get; set; } 
+        public string authAccessToken { get; set; }
         public string authProvider { get; set; }
     }
     

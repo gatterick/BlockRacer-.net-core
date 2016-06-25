@@ -10,7 +10,7 @@ using System;
 /// 1. Validate client input.
 /// 2. Modify the Domain model.
 /// 3. Save the Domain model with the help of repositories.
-/// 4. Map the domain model to the Rest Resources that client consumes.
+/// 4. Map the domain model to the Rest Resources that client consumes and create HAL.
 /// 5. Send answer to client.
 namespace BlockRacer.Mvc.Controllers
 {
@@ -31,6 +31,9 @@ namespace BlockRacer.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody]LoginRequest loginReq) {
             string tokenReq = loginReq.authAccessToken;
+
+            // First check if this a valid token that we have issued.
+            Player 
             
             // Validate access token against authentication provider.
             bool validToken = true; // TODO

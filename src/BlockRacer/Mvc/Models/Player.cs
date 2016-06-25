@@ -25,7 +25,6 @@ namespace BlockRacer.Mvc.Models {
         
         public Player(string name, long id, string authenticationProvider) {
             this.name = name;
-            this.Id = id;
             this.authenticationProvider = authenticationProvider;
             userType = TypeOfUser.Freemium;
             races = new List<Race>();

@@ -24,7 +24,7 @@ namespace BlockRacer.Mvc.Middleware {
         {
             // Only to be able to do some testing since either Google
             // or Facebook SDK supports .net core rc2.
-            Player player = playerRepo.Find("1234");
+            Player player = playerRepo.Find(1234);
             context.Items.Add("Player", player);
             context.Response.StatusCode = 200;
             return;

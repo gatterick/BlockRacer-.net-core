@@ -8,23 +8,50 @@ using Xunit;
 using System.Text;
 using Newtonsoft.Json;
 using BlockRacer.Mvc.Rest.Requests;
+using BlockRacer.Configuration;
+using BlockRacer.Mvc.Models;
+/// <Summary>
+/// Base class for all Integration endpoint-tests. By
+/// inheriting and calling the base constructor the BlockRacer
+/// server is:
+/// 1 Initialized and started.
+/// 2. A client to the webserver is started.
+/// 3. A fake user is created and saved in the database for 
+/// use with the REST api calls.
+/// </summary> 
+namespace BlockRacer.IntegrationTests.Base {
+    public class BaseTestSetup {
+        /// <summary>
+        /// Prepares the Test Setup
+        protected readonly TestServer server;
 
-namespace BlockRacer.IntegrationTests {
-    
-    public class BlockRacerIntegrationTests {
-        private readonly TestServer server;
-        private readonly HttpClient client;
+        protected readonly HttpClient client;
         
-        public BlockRacerIntegrationTests() {
+        protected Player dummyPlayer;
+
+        public BaseTestSetup() {
              var builder = new WebHostBuilder()
                 .UseStartup<Startup>();
                 
+            //this.CreateUserInDatabase();
+
              server = new TestServer(builder);
              client = server.CreateClient();
              
-             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "Your Oauth token");
+             client.DefaultRequestHeaders.Authorization = 
+                new AuthenticationHeaderValue("Bearer", "Your Oauth token");
         }
-
+/*
+        private void CreateUserInDatabase() {
+            Player dummyPlayer = new Player("gatterick", 1234, "Facebook");
+            dummyPlayer.accessToken = "DummyAccessToken";
+            dummyPlayer.accessTokenValidUntil = DateTime.Now.AddHours(1);
+            using (var context = new BRDbContext())
+            {
+                context.Players.Add(dummyPlayer);
+                context.SaveChanges();
+            }
+        }
         private async Task<string> GetAvailableGames(string game) {
             RequestBuilder req = server.CreateRequest("v1/races");
             
@@ -68,30 +95,10 @@ namespace BlockRacer.IntegrationTests {
             var sc = new StringContent(a,
                 Encoding.UTF8, "application/json");
                             
-            var response = await client.PostAsync(request,  sc);
+            var response = await this.client.PostAsync(request,  sc);
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsStringAsync();
-        }
-        
-        /// <summary> 
-        /// Tests the following functional use-case:
-        /// <summary>
-        [Fact]
-        public async Task TestUseCase1() {
-            // Act
-            var clientToken = Login();
-            Console.WriteLine("Logged in with Client Token:" + clientToken);
-            var responseString = await CreateGame();
-            Console.WriteLine(responseString);
-        }
-        
-        //[Fact]
-        public async Task TestGetAvailableGames2() {
-            // Act
-            var responseString = await GetAvailableGames("12345");
-            
-            Console.WriteLine(responseString);
-        }
+        }*/
     }
 }

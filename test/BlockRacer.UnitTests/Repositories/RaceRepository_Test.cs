@@ -1,6 +1,5 @@
-using System;
 using Xunit;
-using BlockRacer.Models;
+using BlockRacer.Mvc.Models;
 using BlockRacer.Repositories;
 
 namespace BlockRacer.UnitTests.Models

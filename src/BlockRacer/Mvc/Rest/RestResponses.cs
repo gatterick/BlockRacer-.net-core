@@ -6,14 +6,6 @@ namespace BlockRacer.Mvc.Rest.Responses {
         public string Error { get; set; }
     }
     
-    public class GameStatusResponse {
-        public int round { get; set; }
-
-        public bool ongoing { get; set; }
-        
-        public string[] playersLeftThisTurn { get; set; }
-    }
-    
     public class NotAllowedResponse {
         public string message { get; set; }
     }

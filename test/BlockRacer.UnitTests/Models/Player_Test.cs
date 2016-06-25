@@ -1,6 +1,5 @@
-using System;
 using Xunit;
-using BlockRacer.Models;
+using BlockRacer.Mvc.Models;
 
 namespace BlockRacer.UnitTests.Models
 {
@@ -9,7 +8,7 @@ namespace BlockRacer.UnitTests.Models
         public void CreateRaceAndCheckNotStartedStatus() {
             Player player = new Player();
             //Race race = new Race();
-            Assert.Equal(player.getUserType(), Player.TypeOfUser.Freemium);   
+            Assert.Equal(player.userType, Player.TypeOfUser.Freemium);  
         }
     }
 }
