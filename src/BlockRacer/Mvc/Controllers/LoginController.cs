@@ -33,7 +33,7 @@ namespace BlockRacer.Mvc.Controllers
             string tokenReq = loginReq.authAccessToken;
 
             // First check if this a valid token that we have issued.
-            Player 
+            
             
             // Validate access token against authentication provider.
             bool validToken = true; // TODO
